@@ -1,4 +1,4 @@
-import {Entity} from "./Models";
+import { Entity } from "./Models";
 
 export type Item = {
   _type: "Item";
@@ -17,38 +17,19 @@ const randomItem = (): Item => {
 };
 
 export const itemsSection = {
-  id: 1,
+  id: "items",
   name: "Items",
-  items: Array.from({ length: 20 }, randomItem) as Entity[],
+  items: Array.from({ length: 10 }, randomItem) as Entity[],
   listRenderer: (item: Entity) => {
     if (item._type !== "Item") return null;
-    return (
-      <div className="row" key={item.id}>
-        <img
-          className="col-6"
-          src="https://static.wikia.nocookie.net/wowpedia/images/c/c2/Inv_potion_51.png"
-        />
-
-        <div className="col-6">
-          {item.name}
-          <div>{item.quantity}</div>
-        </div>
-      </div>
-    );
+    return <div key={item.id}>{item.name}</div>;
   },
   itemRenderer: (item: Entity) => {
     if (item._type !== "Item") return null;
     return (
-      <div className="row">
-        <img
-          className="col-6"
-          src="https://static.wikia.nocookie.net/wowpedia/images/c/c2/Inv_potion_51.png"
-        />
-
-        <div className="col-6">
-          {item.name}
-          <div>{item.quantity}</div>
-        </div>
+      <div>
+        {item.name}
+        <div>{item.quantity}</div>
       </div>
     );
   },

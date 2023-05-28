@@ -1,80 +1,75 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { heroesSection } from "./Hero";
+import { HeroBrowser, heroesSection } from "./Hero/Hero";
+import { Header } from "./Header";
+import * as State from "./State";
 import { itemsSection } from "./Item";
-import { partySection } from "./Party";
+import { tavernSection } from "./Tavern";
+import { questsSection } from "./Quests";
+import { worldSection } from "./World";
 
 function App() {
-  const [sections] = React.useState([
-    heroesSection,
-    itemsSection,
-    partySection,
+  const [heroes, setHeroes] = React.useState(heroesSection.items);
+  const [turn, setTurn] = React.useState(0);
+  const [gold, setGold] = React.useState(0);
+  const [sections, setSections] = React.useState([
+    heroesSection.id,
+    itemsSection.id,
+    tavernSection(() => {}).id,
+    questsSection.id,
+    worldSection.id,
   ]);
+  const [currentSection, setCurrentSection] = React.useState(heroesSection.id);
+  const nextTurn = () => {
+    const newGold = heroesSection.items.length * 100;
+    setGold(gold + newGold);
+    setTurn(turn + 1);
+  };
 
-  const [currentSection, setSelectedSection] = React.useState(sections[0]);
-
-  const [selectedEntity, setSelectedEntity] = React.useState(
-    sections[0].items[0]
-  );
+  const state = {
+    heroes,
+    setHeroes,
+    turn,
+    setTurn,
+    gold,
+    setGold,
+    sections,
+    setSections,
+    currentSection,
+    setCurrentSection,
+  };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col col-sm-2 gx-0" key="sections">
-          <div className="list-group" key="sections">
-            {sections.map((section) => {
-              const classes = [
-                "list-group-item",
-                currentSection.id === section.id ? "active" : null,
-              ].filter((a) => a !== null);
-              return (
-                <div
-                  className={classes.join(" ")}
-                  onClick={() => {
-                    setSelectedSection(section);
-                    setSelectedEntity(section.items[0]);
-                  }}
-                  key={section.id}
-                >
-                  {section.name}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className="col col-sm-3 gx-0" key="entities">
-          <div className="list-group" key="entities">
-            {currentSection.items.map((entity) => {
-              const classes = [
-                "list-group-item",
-                selectedEntity.id === entity.id ? "active" : null,
-              ].filter((a) => a !== null);
-              return (
-                <div
-                  className={classes.join(" ")}
-                  onClick={() => setSelectedEntity(entity)}
-                  key={entity.id}
-                >
-                  {currentSection.listRenderer(entity)}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div id="content" className="col" key="content">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">{selectedEntity.name}</h5>
-              <pre className="card-text">
-                {currentSection.itemRenderer(selectedEntity)}
-              </pre>
-            </div>
-          </div>
-        </div>
+    <State.State.Provider value={state}>
+      <Header />
+      <div className="container">
+        <Router />
       </div>
-    </div>
+      <footer
+        className="footer mt-auto py-3 bg-light"
+        style={{ minHeight: 100 }}
+      >
+        <div className="container">
+          <button
+            className="btn btn-primary float-end"
+            onClick={() => nextTurn()}
+          >
+            Next Turn
+          </button>
+        </div>
+      </footer>
+    </State.State.Provider>
   );
 }
+
+const Router = () => {
+  const { currentSection } = React.useContext(State.State);
+  if (currentSection === "heroes") {
+    return <HeroBrowser />;
+  } else {
+    return null;
+  }
+};
 
 export default App;

@@ -1,5 +1,6 @@
-import {Hero} from "./Hero";
+import {Hero} from "./Hero/Hero";
 import {Item} from "./Item";
-import {Party} from "./Party";
+import {Quest} from "./Quests";
+import {Region} from "./World";
 
-export type Entity = Hero | Item | Party;
+export type Entity = Hero | Item | Quest | Region
