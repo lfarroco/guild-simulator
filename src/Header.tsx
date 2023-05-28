@@ -2,7 +2,9 @@ import { useContext } from "react";
 import * as State from "./State";
 
 export const Header = () => {
-  const {sections, currentSection, gold, setCurrentSection } = useContext(State.State);
+  const { sections, currentSection, gold, setCurrentSection } = useContext(
+    State.State
+  );
 
   return (
     <header className="p-3 mb-3 border-bottom">

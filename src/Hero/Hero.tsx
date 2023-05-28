@@ -1,7 +1,7 @@
-import React from "react";
-import { Entity } from "../Models";
+import React, { useContext } from "react";
+import { State } from "../State";
 
-export const useHeroes = (initial:Entity[]) => {
+export const useHeroes = (initial: Hero[]) => {
   const [heroes, setHeroes] = React.useState(initial);
 
   return {
@@ -36,12 +36,12 @@ export const randomHero = (): Hero => {
 export const heroesSection = {
   id: "heroes",
   name: "Heroes",
-  items: Array.from({ length: 3 }, randomHero) as Entity[],
-  listRenderer: (item: Entity) => {
+  items: Array.from({ length: 3 }, randomHero) as Hero[],
+  listRenderer: (item: Hero) => {
     if (item._type !== "Hero") return null;
     return listRenderer(item);
   },
-  itemRenderer: (item: Entity) => {
+  itemRenderer: (item: Hero) => {
     if (item._type !== "Hero") return null;
     return itemRenderer(item);
   },
@@ -79,7 +79,8 @@ function itemRenderer(hero: Hero) {
 }
 
 export function HeroBrowser({}) {
-  const {heroes} = useHeroes(heroesSection.items)
+  const state = useContext(State);
+
   const [selectedEntity, setSelectedEntity] = React.useState(
     heroesSection.items[0]
   );
@@ -87,7 +88,7 @@ export function HeroBrowser({}) {
     <div className="row">
       <div className="col col-sm-3 gx-0" key="entities">
         <div className="list-group" key="entities">
-          {heroes.map((entity) => {
+          {state.heroes.map((entity) => {
             const classes = [
               "list-group-item",
               selectedEntity.id === entity.id ? "active" : null,

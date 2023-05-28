@@ -1,27 +1,18 @@
 import React, { Dispatch } from "react";
-import { heroesSection } from "./Hero/Hero";
-import { itemsSection } from "./Item";
-import { tavernSection } from "./Tavern";
-import { questsSection } from "./Quests";
-import { worldSection } from "./World";
-import { Entity } from "./Models";
+import { Hero } from "./Hero/Hero";
 
 export const initialState = {
-  heroes: heroesSection.items,
-  setHeroes: (null as unknown) as Dispatch<React.SetStateAction<Entity[]>>,
-  sections: [
-    heroesSection.id,
-    itemsSection.id,
-    tavernSection(() => {}).id,
-    questsSection.id,
-    worldSection.id,
-  ],
+  heroes: [] as Hero[],
+  setHeroes: (null as unknown) as Dispatch<React.SetStateAction<Hero[]>>,
+  sections: [] as string[],
+  tavern: [] as Hero[],
+  setTavern: (null as unknown) as Dispatch<React.SetStateAction<Hero[]>>,
   setSections: (null as unknown) as Dispatch<React.SetStateAction<string[]>>,
   turn: 0,
   setTurn: (null as unknown) as Dispatch<React.SetStateAction<number>>,
-  gold: 100,
+  gold: 0,
   setGold: (null as unknown) as Dispatch<React.SetStateAction<number>>,
-  currentSection: heroesSection.id,
+  currentSection: "",
   setCurrentSection: (null as unknown) as Dispatch<
     React.SetStateAction<string>
   >,

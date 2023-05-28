@@ -1,22 +1,24 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { HeroBrowser, heroesSection } from "./Hero/Hero";
+import { heroesSection } from "./Hero/Hero";
 import { Header } from "./Header";
 import * as State from "./State";
 import { itemsSection } from "./Item";
-import { tavernSection } from "./Tavern";
+import * as Tavern from "./Tavern/Tavern";
 import { questsSection } from "./Quests";
 import { worldSection } from "./World";
+import {Router} from "./Router";
 
 function App() {
   const [heroes, setHeroes] = React.useState(heroesSection.items);
+  const [tavern, setTavern] = React.useState(Tavern.tavernSection.items);
   const [turn, setTurn] = React.useState(0);
   const [gold, setGold] = React.useState(0);
   const [sections, setSections] = React.useState([
     heroesSection.id,
     itemsSection.id,
-    tavernSection(() => {}).id,
+    Tavern.tavernSection.id,
     questsSection.id,
     worldSection.id,
   ]);
@@ -34,6 +36,8 @@ function App() {
     setTurn,
     gold,
     setGold,
+    tavern,
+    setTavern,
     sections,
     setSections,
     currentSection,
@@ -62,14 +66,5 @@ function App() {
     </State.State.Provider>
   );
 }
-
-const Router = () => {
-  const { currentSection } = React.useContext(State.State);
-  if (currentSection === "heroes") {
-    return <HeroBrowser />;
-  } else {
-    return null;
-  }
-};
 
 export default App;
