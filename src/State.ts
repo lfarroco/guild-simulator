@@ -1,9 +1,15 @@
 import React, { Dispatch } from "react";
 import { Hero } from "./Hero/Hero";
+import {Item} from "./Item";
+import { Quest } from "./Quests";
 
 export const initialState = {
   heroes: [] as Hero[],
   setHeroes: (null as unknown) as Dispatch<React.SetStateAction<Hero[]>>,
+  quests: [] as Quest[],
+  setQuests: (null as unknown) as Dispatch<React.SetStateAction<Quest[]>>,
+  items: [] as Item[],
+  setItems: (null as unknown) as Dispatch<React.SetStateAction<Item[]>>,
   sections: [] as string[],
   tavern: [] as Hero[],
   setTavern: (null as unknown) as Dispatch<React.SetStateAction<Hero[]>>,

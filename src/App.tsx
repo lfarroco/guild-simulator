@@ -8,11 +8,13 @@ import { itemsSection } from "./Item";
 import * as Tavern from "./Tavern/Tavern";
 import { questsSection } from "./Quests";
 import { worldSection } from "./World";
-import {Router} from "./Router";
+import { Router } from "./Router";
 
 function App() {
   const [heroes, setHeroes] = React.useState(heroesSection.items);
   const [tavern, setTavern] = React.useState(Tavern.tavernSection.items);
+  const [quests, setQuests] = React.useState(questsSection.items);
+  const [items, setItems] = React.useState(itemsSection.items);
   const [turn, setTurn] = React.useState(0);
   const [gold, setGold] = React.useState(0);
   const [sections, setSections] = React.useState([
@@ -27,11 +29,27 @@ function App() {
     const newGold = heroesSection.items.length * 100;
     setGold(gold + newGold);
     setTurn(turn + 1);
+
+    setQuests(
+      quests.map((quest) => {
+        console.log(quest);
+        if (quest.status === "inProgress") {
+          return {
+            ...quest,
+            progress: quest.progress + 1,
+          };
+        } else return quest;
+      })
+    );
   };
 
   const state = {
     heroes,
     setHeroes,
+    items,
+    setItems,
+    quests,
+    setQuests,
     turn,
     setTurn,
     gold,
