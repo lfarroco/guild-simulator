@@ -32,11 +32,12 @@ function App() {
 
     setQuests(
       quests.map((quest) => {
-        console.log(quest);
         if (quest.status === "inProgress") {
           return {
             ...quest,
             progress: quest.progress + 1,
+            status:
+              quest.progress + 1 >= quest.turns ? "completed" : "inProgress",
           };
         } else return quest;
       })

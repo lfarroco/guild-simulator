@@ -60,8 +60,13 @@ export const TavernBrowser = () => {
 
 function listRenderer(hero: Hero) {
   return (
-    <div key={hero.id}>
-      {hero.name} - {hero.lvl}
+    <div key={hero.id} className="row">
+      <div className="col-3">
+        <img src={hero.picture} className="icon-sm" />
+      </div>
+      <div className="col">
+        {hero.name} - {hero.lvl}
+      </div>
     </div>
   );
 }
@@ -73,31 +78,30 @@ function itemRenderer(
 ) {
   return (
     <div key={hero.id}>
-      <table className="table">
-        <tbody>
-          <tr>
-            <td>Name</td>
-            <td> {hero.name} </td>
-          </tr>
-          <tr>
-            <td>Level</td>
-            <td>{hero.lvl}</td>
-          </tr>
-          <tr>
-            <td>Current Action</td>
-            <td>{hero.currentAction._type}</td>
-          </tr>
-        </tbody>
-      </table>
-      <button
-        className="btn btn-primary"
-        disabled={gold < 100}
-        onClick={() => {
-          onRecruit(hero);
-        }}
-      >
-        Recruit 100 gold
-      </button>
+      <div className="row">
+        <div className="col-3">
+          <img src={hero.picture} className="portrait img img-fluid" />
+        </div>
+        <div className="col">
+          <div className="row">
+            <div className="col-4"> Name </div>
+            <div className="col"> {hero.name} </div>
+          </div>
+          <div className="row">
+            <div className="col-4"> Level </div>
+            <div className="col"> {hero.lvl} </div>
+          </div>
+        </div>
+        <button
+          className="btn btn-primary"
+          disabled={gold < 100}
+          onClick={() => {
+            onRecruit(hero);
+          }}
+        >
+          Recruit 100 gold
+        </button>
+      </div>
     </div>
   );
 }

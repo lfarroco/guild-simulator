@@ -9,7 +9,13 @@ const pictures = [
   "assets/rogue1.png",
   "assets/rogue2.png",
   "assets/rogue3.png",
+  "assets/wizard_male.png",
+  "assets/wizard_male2.png",
+  "assets/sorceress_male.png",
+  "assets/necromancer_female.png",
+  "assets/archer.png",
 ];
+
 export const useHeroes = (initial: Hero[]) => {
   const [heroes, setHeroes] = React.useState(initial);
 

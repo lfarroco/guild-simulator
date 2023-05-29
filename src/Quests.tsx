@@ -28,10 +28,7 @@ const quest = (name: string, description: string): Quest => ({
   progress: 0,
   level: 1,
   capacity: 3,
-  rewards: [
-
-
-  ],
+  rewards: [],
   heroes: [],
 });
 
@@ -73,7 +70,7 @@ export const QuestBrowser = () => {
 
   const selectedQuest = quests.find((q) => q.id === selectedQuestId);
 
-  if(!selectedQuest) return null;
+  if (!selectedQuest) return null;
 
   return (
     <div className="row">
@@ -120,7 +117,7 @@ function listRenderer(quest: Quest) {
 }
 
 function ItemRenderer({ quest }: { quest: Quest }) {
-  const { heroes, quests, setQuests } = useContext(State);
+  const { heroes, quests, setQuests, setHeroes } = useContext(State);
   const assignHero = (heroId: string, questId: string, index: number) => {
     console.log(`Assigning hero ${heroId} to quest ${questId}`);
     setQuests(
@@ -131,6 +128,25 @@ function ItemRenderer({ quest }: { quest: Quest }) {
         return q;
       })
     );
+
+    quest.heroes.forEach((h) => {
+      const hero = heroes.find((hero) => hero.id === h);
+
+      if (!hero) return;
+
+      setHeroes(
+        heroes.map((existingHero) => {
+          if (existingHero.id === hero.id) {
+            existingHero.currentAction = {
+              _type: "Questing",
+              quest: questId,
+              turns: quest.turns,
+            };
+          }
+          return existingHero;
+        })
+      );
+    });
   };
 
   const startQuest = () => {
@@ -200,6 +216,12 @@ function ItemRenderer({ quest }: { quest: Quest }) {
         <div>
           <div>Quest in progress</div>
           <div>Turns remaining: {quest.turns - quest.progress}</div>
+        </div>
+      )}
+      {quest.status === "completed" && (
+        <div>
+          <div>Quest completed</div>
+          <button className="btn btn-success"> Claim reward </button>
         </div>
       )}
 
