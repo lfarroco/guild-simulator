@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 import { State } from "../State";
 
 const pictures = [
@@ -31,8 +33,11 @@ type HeroAction =
   | { _type: "Harvest"; location: string }
   | { _type: "Questing"; quest: string; turns: number };
 
+type HeroJob = "Fighter" | "Rogue" | "Cleric" | "Wizard" | "Archer";
+
 export type Hero = {
   _type: "Hero";
+  job: HeroJob;
   id: string;
   name: string;
   lvl: number;
@@ -44,6 +49,7 @@ export type Hero = {
 export const randomHero = (): Hero => {
   return {
     _type: "Hero",
+    job: "Fighter",
     id: Math.random().toString(),
     name: "Hero " + Math.floor(Math.random() * 100),
     lvl: 1,
@@ -56,20 +62,34 @@ export const randomHero = (): Hero => {
 export const heroesSection = {
   id: "heroes",
   name: "Heroes",
-  items: Array.from({ length: 3 }, randomHero) as Hero[],
 };
 
+export const hero = (
+  name: string,
+  lvl: number,
+  job: HeroJob,
+  picture: string
+): Hero => {
+  return {
+    _type: "Hero",
+    id: Math.random().toString(),
+    name,
+    job,
+    xp: 0,
+    lvl,
+    currentAction: { _type: "Idle" },
+    picture,
+  };
+};
+
+export const defaultHeroes = [
+  hero("Khastan", 1, "Fighter", "assets/knight.png"),
+  hero("Melissa", 1, "Rogue", "assets/rogue1.png"),
+  hero("Prishnak", 1, "Cleric", "assets/goblin_cleric.png"),
+];
+
 function listRenderer(hero: Hero) {
-  return (
-    <div key={hero.id} className="row">
-      <div className="col-3">
-        <img src={hero.picture} className="icon-sm" />
-      </div>
-      <div className="col">
-        {hero.name} - {hero.lvl}
-      </div>
-    </div>
-  );
+  return <img src={hero.picture} className="icon-sm" />;
 }
 
 function itemRenderer(hero: Hero) {
@@ -122,37 +142,43 @@ export function HeroBrowser() {
   const state = useContext(State);
 
   const [selectedEntity, setSelectedEntity] = React.useState(
-    heroesSection.items[0]
+    null as null | Hero
   );
   return (
-    <div className="row">
-      <div className="col col-sm-3 gx-0" key="entities">
-        <div className="list-group" key="entities">
-          {state.heroes.map((entity) => {
-            const classes = [
-              "list-group-item",
-              selectedEntity.id === entity.id ? "active" : null,
-            ].filter((a) => a !== null);
-            return (
-              <div
-                className={classes.join(" ")}
-                onClick={() => setSelectedEntity(entity)}
-                key={entity.id}
-              >
-                {listRenderer(entity)}
-              </div>
-            );
-          })}
-        </div>
+    <>
+      <div id="hero-browser" className="row">
+        {state.heroes.map((entity) => {
+          const classes = [
+            "col-sm-1 col-2",
+            selectedEntity?.id === entity.id ? "active" : null,
+          ].filter((a) => a !== null);
+          return (
+            <div
+              className={classes.join(" ")}
+              onClick={() => setSelectedEntity(entity)}
+              key={entity.id}
+            >
+              {listRenderer(entity)}
+            </div>
+          );
+        })}
       </div>
-      <div id="content" className="col" key="content">
-        <div className="card">
-          <div className="card-body">
-            <h5 className="card-title">{selectedEntity.name}</h5>
-            {itemRenderer(selectedEntity)}
-          </div>
-        </div>
-      </div>
-    </div>
+      <Modal
+        show={selectedEntity !== null}
+        onHide={() => setSelectedEntity(null)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Hero Information</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedEntity !== null && itemRenderer(selectedEntity)}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setSelectedEntity(null)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }

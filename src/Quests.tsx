@@ -173,7 +173,7 @@ function ItemRenderer({ quest }: { quest: Quest }) {
             (hero) => hero.id === quest.heroes[index]
           );
           return (
-            <div className="col-2">
+            <div className="col-2" key={"slot-" + index}>
               <Dropdown
                 onSelect={(heroId) => {
                   if (heroId) assignHero(heroId, quest.id, index);

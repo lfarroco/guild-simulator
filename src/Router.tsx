@@ -4,6 +4,7 @@ import { TavernBrowser } from "./Tavern/Tavern";
 import * as State from "./State";
 import { QuestBrowser } from "./Quests";
 import { ItemsBrowser } from "./Item";
+import { WorldBrowser } from "./World";
 
 export const Router = () => {
   const { currentSection } = React.useContext(State.State);
@@ -13,6 +14,7 @@ export const Router = () => {
     tavern: TavernBrowser,
     quests: QuestBrowser,
     items: ItemsBrowser,
+    world: WorldBrowser,
   } as any;
 
   const Component = components[currentSection];

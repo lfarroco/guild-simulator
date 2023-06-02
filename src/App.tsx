@@ -1,32 +1,38 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { heroesSection } from "./Hero/Hero";
+import * as Hero from "./Hero/Hero";
 import { Header } from "./Header";
 import * as State from "./State";
 import { itemsSection } from "./Item";
 import * as Tavern from "./Tavern/Tavern";
 import { questsSection } from "./Quests";
-import { worldSection } from "./World";
+import * as World from "./World";
 import { Router } from "./Router";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
 
 function App() {
-  const [heroes, setHeroes] = React.useState(heroesSection.items);
-  const [tavern, setTavern] = React.useState(Tavern.tavernSection.items);
+  const [heroes, setHeroes] = React.useState(Hero.defaultHeroes);
+  const [tavern, setTavern] = React.useState(Tavern.tavernPool);
   const [quests, setQuests] = React.useState(questsSection.items);
   const [items, setItems] = React.useState(itemsSection.items);
+  const [regions, setRegions] = React.useState(World.regions);
   const [turn, setTurn] = React.useState(0);
   const [gold, setGold] = React.useState(0);
   const [sections, setSections] = React.useState([
-    heroesSection.id,
+    Hero.heroesSection.id,
     itemsSection.id,
     Tavern.tavernSection.id,
     questsSection.id,
-    worldSection.id,
+    World.worldSection.id,
   ]);
-  const [currentSection, setCurrentSection] = React.useState(heroesSection.id);
+  const [currentSection, setCurrentSection] = React.useState(
+    Hero.heroesSection.id
+  );
   const nextTurn = () => {
-    const newGold = heroesSection.items.length * 100;
+    const newGold = heroes.length * 100;
     setGold(gold + newGold);
     setTurn(turn + 1);
 
@@ -49,6 +55,8 @@ function App() {
     setHeroes,
     items,
     setItems,
+    regions,
+    setRegions,
     quests,
     setQuests,
     turn,
@@ -69,19 +77,15 @@ function App() {
       <div className="container">
         <Router />
       </div>
-      <footer
-        className="footer mt-auto py-3 bg-light"
-        style={{ minHeight: 100 }}
-      >
-        <div className="container">
-          <button
-            className="btn btn-primary float-end"
+      <Navbar expand="lg" variant="light" bg="light" fixed="bottom">
+        <Container>
+          <Button
             onClick={() => nextTurn()}
           >
             Next Turn
-          </button>
-        </div>
-      </footer>
+          </Button>
+        </Container>
+      </Navbar>
     </State.State.Provider>
   );
 }

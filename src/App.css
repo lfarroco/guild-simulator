@@ -1,5 +1,13 @@
-
+#root{
+  min-width: 360px;
+  max-width: 960px;
+  margin: 0 auto;
+}
 .icon-sm{
   height: 50px;
   border: 3px ridge gray;
+}
+
+#hero-browser .icon-sm{
+  margin-bottom: 12px;
 }
